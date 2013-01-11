@@ -10,17 +10,18 @@ This is a great way to monitor if any files are left behind.
 Examples
 --------
 
-* check a bucket named 'my-files' for objects older than 48 hours:
+Check a bucket named 'my-files' for objects older than 48 hours:
 
     python check-s3-age.py -b '["my-files"]' -a 48 -d
 
-* check all buckets for objects older than 1 year:
+Check all buckets for objects older than 1 year:
 
     python check-s3-age.py -a 8760
 
-* check all buckets for objects older than 24 hours, if the object name starts with foo:
+Check all buckets for objects older than 24 hours, if the object name starts with foo:
 
- Note: the object name prefix does *not* include the bucket name.
+Note: the object name prefix does *not* include the bucket name.
+
     python check-s3-age.py -p foo -d
 
 Reporting options
@@ -31,6 +32,9 @@ If the --deep (-d) option is used, the script will aggregate results per directo
 
 Given these objects in a bucket: a, a/dir/1, a/dir/2, b/zot, b/bzzt, foo/bar/baz/123
 This is the output, if they are all older than max-age:
+	
+	There are 6 files more than 24 hours old in s3://foo.
+	The breakdown:
     { '.': 1,
       'a/dir': 2,
       'b': 2,
@@ -43,5 +47,5 @@ crazy enough to use --list; then it'll list all objects in s3).
 
 Requires
 --------
-    config: .boto
-    non-standard packages: python-dateutil
+* config: .boto
+* non-standard packages: python-dateutil
