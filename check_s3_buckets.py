@@ -40,7 +40,7 @@ Reporting options:
 
 Requires:
     config: .boto
-    non-standard packages: python-dateutil
+    non-standard packages: python-dateutil, boto
 """
 
 import boto
