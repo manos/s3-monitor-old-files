@@ -48,4 +48,4 @@ crazy enough to use --list; then it'll list all objects in s3).
 Requires
 --------
 * config: .boto
-* non-standard packages: python-dateutil
+* non-standard packages: python-dateutil, boto
