@@ -11,7 +11,7 @@
 Examples:
 
     * check a bucket named 'my-files' for objects older than 48 hours:
-        python check-s3-age.py -b '["my-files"]' -a 48 -d
+        python check-s3-age.py -b my-files -a 48 -d
 
     * check all buckets for objects older than 1 year:
         python check-s3-age.py -a 8760
@@ -51,7 +51,7 @@ from optparse import OptionParser
 
 parser = OptionParser(usage=__doc__)
 parser.add_option("-a", "--max-age", help="max age in hours of files, before they are reported", default=24)
-parser.add_option("-b", "--buckets", help="LIST of bucket names to check", default=False)
+parser.add_option("-b", "--buckets", action="append", type="str", help="bucket names to check (can use multiple times)", default=[])
 parser.add_option("-d", "--deep", action="store_true", help="report counts by 'directory' structure", default=False)
 parser.add_option("-l", "--list-files", action="store_true", help="list found files", default=False)
 parser.add_option("-p", "--prefix", help="prefix for s3 API call", default="")

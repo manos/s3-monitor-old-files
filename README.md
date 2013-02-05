@@ -12,7 +12,7 @@ Examples
 
 Check a bucket named 'my-files' for objects older than 48 hours:
 
-    python check-s3-age.py -b '["my-files"]' -a 48 -d
+    python check-s3-age.py -b my-files -a 48 -d
 
 Check all buckets for objects older than 1 year:
 
