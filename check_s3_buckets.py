@@ -49,20 +49,13 @@ import dateutil.parser
 import pprint
 from optparse import OptionParser
 
-parser = OptionParser(usage=__doc__)
-parser.add_option("-a", "--max-age", help="max age in hours of files, before they are reported", default=24)
-parser.add_option("-b", "--buckets", action="append", type="str", help="bucket names to check (can use multiple times)", default=[])
-parser.add_option("-d", "--deep", action="store_true", help="report counts by 'directory' structure", default=False)
-parser.add_option("-l", "--list-files", action="store_true", help="list found files", default=False)
-parser.add_option("-p", "--prefix", help="prefix for s3 API call", default="")
-(options, args) = parser.parse_args()
 
-def find_old_objects(bucket):
+def find_old_objects(bucket, options):
     """
     Returns all s3 keys (objects) older than max-age hours in the passed bucket object, as a
     list of boto.s3.key.Key objects.
     """
-    objects = [x for x in bucket.list(prefix=options.prefix)]
+    objects = list(bucket.list(prefix=options.prefix))
 
     if len(objects) == 0:
         return None
@@ -75,6 +68,14 @@ def find_old_objects(bucket):
 
 if __name__ == '__main__':
 
+    parser = OptionParser(usage=__doc__)
+    parser.add_option("-a", "--max-age", help="max age in hours of files, before they are reported", default=24)
+    parser.add_option("-b", "--buckets", action="append", type="str", help="bucket names to check (can use -b multiple times)", default=[])
+    parser.add_option("-d", "--deep", action="store_true", help="report counts by 'directory' structure", default=False)
+    parser.add_option("-l", "--list-files", action="store_true", help="list found files", default=False)
+    parser.add_option("-p", "--prefix", help="prefix for s3 API call", default="")
+    (options, args) = parser.parse_args()
+
     pp = pprint.PrettyPrinter(indent=2)
     buckets = boto.connect_s3().get_all_buckets()
 
@@ -84,7 +85,7 @@ if __name__ == '__main__':
         if options.buckets and bucket.name not in options.buckets:
             continue
 
-        old_files = find_old_objects(bucket)
+        old_files = find_old_objects(bucket, options)
 
         if not old_files or len(old_files) < 1:
             continue
